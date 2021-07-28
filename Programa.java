@@ -32,7 +32,7 @@ public class Programa extends JFrame implements ActionListener {
     JanelaConsulta janelaConsultaFornecedor;
 
     public Programa() {  
-        super("Multiple Document Interface");  
+        super("Loja de Produtos");  
             
         setBounds(50,50,700,500);  
         setExtendedState(JFrame.MAXIMIZED_BOTH);
