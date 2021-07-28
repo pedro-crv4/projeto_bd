@@ -3,6 +3,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
 import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.sql.Date;  
 
 public class Programa extends JFrame implements ActionListener {  
     Connection con;
@@ -166,14 +168,14 @@ public class Programa extends JFrame implements ActionListener {
 
     void criaTabelas() {
         try {
-            stmt.executeUpdate("CREATE TABLE FUNCIONARIO ( ID INTEGER NOT NULL PRIMARY KEY, DataDaContratacao DATETIME NOT NULL, Salario INTEGER NOT NULL, Funcao VARCHAR(50) NOT NULL, DataDeNascimento DATETIME NOT NULL, Numero INTEGER NOT NULL, Cidade VARCHAR(50) NOT NULL, Telefone INTEGER NOT NULL, CPF INTEGER NOT NULL, Nome VARCHAR(50) NOT NULL, Rua VARCHAR(50) NOT NULL, Sexo VARCHAR(50) NOT NULL);");
-            stmt.executeUpdate("CREATE TABLE CLIENTE ( ID INTEGER NOT NULL PRIMARY KEY, CPF INTEGER NOT NULL, email VARCHAR(50) NOT NULL, DataDeNascimento DATETIME NOT NULL, Numero INTEGER NOT NULL, Cidade VARCHAR(50) NOT NULL, Telefone INTEGER NOT NULL, CPF INTEGER NOT NULL, Nome VARCHAR(50) NOT NULL, Rua VARCHAR(50) NOT NULL, Sexo VARCHAR(50) NOT NULL);");
+            stmt.executeUpdate("CREATE TABLE FUNCIONARIO ( ID INTEGER NOT NULL PRIMARY KEY, DataDaContratacao VARCHAR(10) NOT NULL, Salario INTEGER NOT NULL, Funcao VARCHAR(50) NOT NULL, DataDeNascimento VARCHAR(10) NOT NULL, Numero INTEGER NOT NULL, Cidade VARCHAR(50) NOT NULL, Telefone VARCHAR(50) NOT NULL, CPF VARCHAR(14) NOT NULL, Nome VARCHAR(50) NOT NULL, Rua VARCHAR(50) NOT NULL, Sexo VARCHAR(50) NOT NULL);");
+            stmt.executeUpdate("CREATE TABLE CLIENTE ( ID INTEGER NOT NULL PRIMARY KEY, CPF VARCHAR(14) NOT NULL, email VARCHAR(50) NOT NULL, DataDeNascimento VARCHAR(10) NOT NULL, Numero INTEGER NOT NULL, Cidade VARCHAR(50) NOT NULL, Telefone VARCHAR(50) NOT NULL, Nome VARCHAR(50) NOT NULL, Rua VARCHAR(50) NOT NULL, Sexo VARCHAR(50) NOT NULL);");
 
-            stmt.executeUpdate("CREATE TABLE FORNECEDOR ( ID INTEGER NOT NULL PRIMARY KEY, CNPJ INTEGER NOT NULL, Nome VARCHAR(50) NOT NULL, Endereco VARCHAR(50) NOT NULL );");
+            stmt.executeUpdate("CREATE TABLE FORNECEDOR ( ID INTEGER NOT NULL PRIMARY KEY, CNPJ VARCHAR(18) NOT NULL, Nome VARCHAR(50) NOT NULL, Endereco VARCHAR(50) NOT NULL );");
 
             stmt.executeUpdate("CREATE TABLE PRODUTO ( ID INTEGER NOT NULL PRIMARY KEY, Valor INTEGER NOT NULL, Lote INTEGER NOT NULL, SKU INTEGER NOT NULL, Nome VARCHAR(50) NOT NULL, Marca VARCHAR(50) NOT NULL, Categoria VARCHAR(50) NOT NULL, Quantidade INTEGER NOT NULL, Peso INTEGER NOT NULL, COD_FORNECEDOR INTEGER, FOREIGN KEY (COD_FORNECEDOR) REFERENCES FORNECEDOR(ID) );");
 
-            stmt.executeUpdate("CREATE TABLE PEDIDO ( NUMERO INTEGER NOT NULL PRIMARY KEY, ValorTotal INTEGER NOT NULL, DataCriacao DATETIME NOT NULL, DataExpedicao DATETIME NOT NULL, FormaPagamento VARCHAR(50) NOT NULL, COD_CLIENTE INTEGER, COD_FUNCIONARIO INTEGER, FOREIGN KEY (COD_CLIENTE) REFERENCES CLIENTE(ID), FOREIGN KEY (COD_FUNCIONARIO) REFERENCES FUNCIONARIO(ID) );");
+            stmt.executeUpdate("CREATE TABLE PEDIDO ( NUMERO INTEGER NOT NULL PRIMARY KEY, ValorTotal INTEGER NOT NULL, DataCriacao VARCHAR(10) NOT NULL, DataExpedicao VARCHAR(10) NOT NULL, FormaPagamento VARCHAR(50) NOT NULL, COD_CLIENTE INTEGER, COD_FUNCIONARIO INTEGER, FOREIGN KEY (COD_CLIENTE) REFERENCES CLIENTE(ID), FOREIGN KEY (COD_FUNCIONARIO) REFERENCES FUNCIONARIO(ID) );");
 
             JOptionPane.showMessageDialog(null, "Tabelas criada com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException ex) {
@@ -256,7 +258,6 @@ class JanelaInsere extends JInternalFrame {
                             } else if ( columnType == "INTEGER" ) {
                                 pStmt.setInt(i, Integer.parseInt(textfields.get(i - 1).getText()));
                             }
-                            System.out.println(textfields.get(i - 1).getText());
                         }
                         pStmt.executeUpdate();
                     } catch (Exception ex) {
@@ -385,12 +386,10 @@ class JanelaConsulta extends JInternalFrame implements ActionListener {
 
             for(int i = 0; i < row - 1; i++) {
                 for(int j = 0; j < column_count; j++) {
-                    System.out.print(array.get(i).get(j) + " - ");
                     result += array.get(i).get(j) + " ";
                 }
                 ta1.append(result + "\n");
                 result = "";
-                System.out.println("");
             }
 
             tf1.selectAll();
