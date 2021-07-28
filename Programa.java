@@ -177,9 +177,13 @@ public class Programa extends JFrame implements ActionListener {
 
             stmt.executeUpdate("CREATE TABLE PEDIDO ( NUMERO INTEGER NOT NULL PRIMARY KEY, ValorTotal INTEGER NOT NULL, DataCriacao VARCHAR(10) NOT NULL, DataExpedicao VARCHAR(10) NOT NULL, FormaPagamento VARCHAR(50) NOT NULL, COD_CLIENTE INTEGER, COD_FUNCIONARIO INTEGER, FOREIGN KEY (COD_CLIENTE) REFERENCES CLIENTE(ID), FOREIGN KEY (COD_FUNCIONARIO) REFERENCES FUNCIONARIO(ID) );");
 
+            stmt.executeUpdate("CREATE TABLE PEDIDO_POSSUI_PRODUTO ( ID INTEGER NOT NULL PRIMARY KEY, COD_PEDIDO INTEGER, COD_PRODUTO INTEGER, FOREIGN KEY(COD_PEDIDO) REFERENCES PEDIDO(NUMERO), FOREIGN KEY(COD_PRODUTO) REFERENCES PRODUTO(ID) );");
+
             JOptionPane.showMessageDialog(null, "Tabelas criada com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(desktop, "Erro na criação da tabela.\n"+ex, "Erro", JOptionPane.ERROR_MESSAGE);
+            if ( !ex.toString().contains("Table already exists") ) {
+                JOptionPane.showMessageDialog(desktop, "Erro na criação da tabela.\n"+ex, "Erro", JOptionPane.ERROR_MESSAGE);
+            }
         } catch (NullPointerException ex) {
             JOptionPane.showMessageDialog(desktop, "Problema interno.\n"+ex, "Erro", JOptionPane.ERROR_MESSAGE);
         }
