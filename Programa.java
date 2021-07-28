@@ -205,7 +205,7 @@ class JanelaInsere extends JInternalFrame {
     ArrayList<JTextField> textfields = new ArrayList<JTextField>();
 
     public JanelaInsere(JDesktopPane d, Connection con, String table) {
-        super("Insere na tabela " + table, false, true, false, true); //resizable, closable, maximizable, iconifiable
+        super("Insere na tabela " + table, true, true, false, true); //resizable, closable, maximizable, iconifiable
         desktop = d;
         try {
 
@@ -227,12 +227,17 @@ class JanelaInsere extends JInternalFrame {
 
             pStmt = con.prepareStatement(query);
 
-            setLayout(new FlowLayout());
+            setLayout(new FlowLayout(FlowLayout.LEFT));
+            setPreferredSize(new Dimension(700, 500));
+            setMaximumSize(new Dimension(700, 500));
+
 
             for(int i = 1; i <= column_count; i++) {
-                add(new JLabel(rsmd.getColumnName(i) + ":"));
+                JPanel panel = new JPanel();
+                panel.add(new JLabel(rsmd.getColumnName(i) + ":"));
                 textfields.add(new JTextField(30));
-                add(textfields.get(i - 1));
+                panel.add(textfields.get(i - 1));
+                add(panel);
             }
 
             add(bt1 = new JButton("Insere"));
